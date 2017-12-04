@@ -1,4 +1,4 @@
-# Optimizing Swift build times
+# Swift 编译优化指南
 
 Collection of advice on optimizing compile times of Swift projects.
 
@@ -6,7 +6,7 @@ Swift is constantly improving ❤️. For the time being, though, long compile t
 
 👷🏻 Maintainer: [Arek Holko](https://twitter.com/arekholko). Anything missing? **Issues and pull requests welcomed!**
 
-# Table of contents
+# 目录
 
 - [Type checking of functions and expressions](#type-checking-of-functions-and-expressions)
 - [Slowly compiling files](#slowly-compiling-files)
@@ -19,22 +19,20 @@ Swift is constantly improving ❤️. For the time being, though, long compile t
 - [Xcode Schemes](#xcode-schemes)
 - [Showing build times in Xcode](#showing-build-times-in-xcode)
 
-# Type checking of functions and expressions
+# 函数及表达式的类型检查
 
-Swift build times are slow mostly because of expensive type checking. By default Xcode doesn't show code that's slow to compile. You can instruct it to show slowly compiling functions and expressions, though by adding:
+类型检查通常是导致编译速度变慢的罪魁祸首。Xcode 默认情况下不会告诉你哪些代码拖累编译速度。 你可以通过在 build settings 的 `Other Swift Flags` 中添加 Swift flag 来找出拖后腿的函数和表达式。 
 
-- `-Xfrontend -warn-long-function-bodies=100` (`100` means 100ms here, you should experiment with this value depending on your computer speed and project)
+- `-Xfrontend -warn-long-function-bodies=100` (`100` 是指 100 毫秒, 你应该根据你的电脑配置或项目来调整这个参数)
 - `-Xfrontend -warn-long-expression-type-checking=100`
-
-to `Other Swift Flags` in build settings:
 
 <img src="assets/times@2x.png" width="732">
 
-Build again and you should now see warnings like these:
+重新 Build 一下你的项目，你现在应该能看到类似下面的警告：
 
 <img src="assets/xcode-warning@2x.png" width="801">
 
-Next step is to address code that Swift compiler has problems with. [John Sundell](https://www.swiftbysundell.com/posts/improving-swift-compile-times) and [Robert Gummesson](https://medium.com/@RobertGummesson/regarding-swift-build-time-optimizations-fc92cdd91e31) are here to help you with that.
+接下来就是通过 [John Sundell](https://www.swiftbysundell.com/posts/improving-swift-compile-times) 和 [Robert Gummesson](https://medium.com/@RobertGummesson/regarding-swift-build-time-optimizations-fc92cdd91e31) 介绍的方法来定位那些导致编译慢的代码。
 
 ⚠️ Warning: This technique doesn’t work for targets using Whole Module Optimization. Please temporarily disable WMO if you have it enabled.
 
